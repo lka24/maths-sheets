@@ -1,0 +1,160 @@
+
+\documentclass{report}
+
+% Most of the preamble is just copy-pasted from things I usually add to my documents.
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[a4paper, margin=0.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{tikz}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{pgfplots}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{verbatim}
+\usepackage{nameref}
+\usepackage{paracol}
+\usepackage{tikz-cd}
+\usepackage{derivative}
+\usepackage{url}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{xfrac}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{tcolorbox}
+\usepackage{soul}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.misc}
+\usepackage[english]{babel}
+\globalcounter{figure}
+
+\let\Subsectionmark\subsectionmark
+\def\Subsectionname{}
+\def\subsectionmark#1{\def\Subsectionname{#1}\Subsectionmark{#1}}
+\fancyhead[R]{\Subsectionname}
+
+\newenvironment{solution}
+    {\renewcommand\qedsymbol{}\begin{proof}[Solution]}
+    {\end{proof}}
+
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Expect}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Var}[1]{\mathrm{Var}\left[#1\right]}
+\newcommand{\Prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\Cov}[2]{\mathrm{Cov}\left(#1,#2\right)}
+\newcommand{\Rat}{\mathbb{Q}}
+\newcommand{\Img}[1]{\mathrm{im}\left(#1\right)}
+\newcommand{\Ker}[1]{\mathrm{ker}\left(#1\right)}
+\newcommand{\ftr}[1]{\mathcal{F}\{#1\}}
+\newcommand{\invftr}[1]{\mathcal{F}^{-1} \left\{ #1 \right\}}
+\newcommand{\ftrcos}[1]{\mathcal{F}_c \left\{#1 \right\}}
+\newcommand{\ftrsin}[1]{\mathcal{F}_s \left\{#1 \right\}}
+\newcommand{\supp}[1]{\mathrm{supp}\left(#1\right)}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Int}{\mathbb{Z}}
+\newcommand{\di}[1]{\mathop{\mathrm{d}#1}}
+\newcommand{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d}#2}}
+\newcommand{\kderiv}[3]{\frac{\mathrm{d}^{#3}#1}{\mathrm{d}#2^{#3}}}
+\newcommand{\set}[1]{\{ #1 \}}
+\newcommand{\dls}[2]{\mathrm{L} \left( #1, #2 \right)}
+\newcommand{\dus}[2]{\mathrm{U} \left( #1, #2 \right)}
+\newcommand{\like}[2]{\mathrm{L}\left(#1 \vert #2 \right)}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\Span}[1]{\mathrm{Span}\left( #1 \right)}
+\newcommand{\irv}[1]{\mathbb{I}_{#1}}
+\newcommand{\ord}[1]{\mathrm{ord}\left(#1\right)}
+\newcommand{\cycg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\idx}[2]{\left| #1 : #2 \right|}
+\newcommand{\rss}{\mathrm{RSS}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\renewcommand{\phi}{\varphi}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+
+\title{Cayley-Hamilton Proof}
+\author{}
+\date{2025}
+
+
+
+\begin{document}
+        \begin{theorem}[Cayley-Hamilton Theorem]
+            Suppose that $A$ is an $n \times n$ matrix with characteristic polynomial $\chi_A (x)$.
+            Then $\chi_A (A)$, the result of substituting the matrix $A$ into the characteristic
+            polynomial, is zero.
+        \end{theorem}
+        \begin{proof}
+            We split into two cases.
+            \begin{itemize}
+                \item \textbf{\ul{Case 1}: $A$ has a $T$-invariant subspace.}
+            \end{itemize}
+            Suppose that $T:V \rightarrow V$ ($\dim{V} = n$) is a linear transformation, and suppose that $A$
+            has a $T$-invariant subspace that is not $\set{\vec{0}_V}$ or $V$. We proceed by induction
+            on $n$ in this case.
+            
+            First, let $n = 1$. Then $A = \begin{bmatrix} a_{11} \end{bmatrix}$ and $\chi_A (x) = x - a_{11}$,
+            so that $\chi_A (A) = \begin{bmatrix} a_{11} \end{bmatrix} - a_{11} I_{1} = 0$. 
+
+            Now assume that, for any $m < n$, the Cayley-Hamilton Theorem is true for the $m \times m$ matrix $A$.
+
+            Continue with the inductive step. Let the $T$-invariant subspace be $W$ and let a basis of $W$ be
+            $B_W$. Let $B$ be a basis of $V$ produced by extending $B_W$. Obtain the basis $\bar{B}$ of the
+            quotient space $\sfrac{V}{W}$ using the versions of the elements of $B \setminus B_W$ in the
+            quotient space. Let $T\vert_W$ be the restriction of $T$ to $W$ and let $\bar{T}$ be the
+            map corresponding to $T$ in the quotient space. Recall that 
+            \[ [T]_B = \begin{bmatrix} [T\vert_W]_{B_W} & \ast \\ 0 & [\bar{T}]_{\bar{B}} \end{bmatrix} \]
+            (which is a block matrix). Note that 
+            \[ \chi_T (x) = \chi_{\bar{T}} (x) \chi_{T\vert_W} (x)\]
+            Using the property that if we apply a polynomial to a block matrix of the form of $A$ then we merely
+            need to apply it to each of the blocks inside the block matrix, we can write
+            \begin{align*}
+                \chi_T (A) &= \chi_{T\vert_W} (A) \chi_{\bar{T}} (A) \\
+                &= \begin{bmatrix} \chi_{T\vert_{W}} \left([T\vert_W]_{B_W}\right) & \ast \\
+                0 & \chi_{T\vert_{W}} \left([\bar{T}]_{\bar{B}}\right) \end{bmatrix}
+                \begin{bmatrix} \chi_{\bar{T}} \left([T\vert_W]_{B_W}\right) & \ast \\
+                0 & \chi_{\bar{T}} \left([\bar{T}]_{\bar{B}}\right) \end{bmatrix} \\
+                &= \begin{bmatrix} 0 & \ast \\ 0 & \chi_{T\vert_{W}} \left( [\bar{T}]_{\bar{B}}\right) \end{bmatrix}
+                \begin{bmatrix} \chi_{\bar{T}} \left([T\vert_W]_{B_W}\right) & \ast \\ 0 & 0 \end{bmatrix} \\
+                &= 0
+            \end{align*}
+            where the evaluation of the characteristic polynomials came from the inductive hypothesis. This is what we wanted.
+
+            \begin{itemize}
+                \item \textbf{\ul{Case 2}: $A$ does not have a $T$-invariant subspace.}
+            \end{itemize}
+            For the other case, suppose that $A$ has no non-trivial $T$-invariant subspaces for any $T: V \rightarrow V$.
+            (Again we will let $\dim{V} = n$.)
+            Define the conspicuously named $B$ as $B = \set{\vec{v}, T(\vec{v}), \dots, T^{n-1}(\vec{v})}$ for whichever $T$ you
+            like and $\vec{v} \in V$ nonzero. We claim that $B$ is a basis of $V$.
+            To prove this, we will let $j$ be the largest integer with 
+            \[ S_j = \set{\vec{v}, T(\vec{v}), \dots, T^{j-1}(\vec{v})}\]
+            a linearly independent set. This $j$ must exist because clearly $S_1$ is linearly independent, also $1 \leq j \leq n$.
+            
+            Now we must show $j = n$. Let $W = \Span{S_j}$, which means $\dim{W} = j$. Note that $S_j$ is a basis of $W$. Now
+            note that the set
+            \[S' = \set{T(\vec{v}), T^2(\vec{v}), \dots, T^j (\vec{v})}\]
+            is contained in $W$ because, by definition of $j$, the set $S_j \cup \set{T^j (\vec{v})}$ is not linearly independent
+            and therefore $T^j (\vec{v}) \in \Span{S_j} = W$. This means that $\vec{v} \in W \implies T(\vec{v}) \in W$, since $S_j$
+            was a basis of $W$, and therefore $W$ is $T$-invariant. Yet, we are told by our assumption that this requires $W$ to be
+            trivial. We can't have $W = \set{\vec{0}_V}$ since $j \geq 1$, so $j = n$, and $B$ is a basis of $V$.
+
+            Now that we know this fact we can proceed. The matrix of $T$ with respect to the basis $B$ is
+            \[ \begin{bmatrix} 0 & 0 & 0 & \dots & 0 & -a_0 \\ 1 & 0 & 0 & \dots & 0 & -a_1 \\ 0 & 1 & 0 & \dots & 0 & -a_2 \\
+            \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & 0 & \dots & 1 & - a_{n-1}\end{bmatrix}\]
+            where we let $T^n (\vec{v}) = - \left( a_0 \vec{v}+ a_1 T(\vec{v}) + \dots + a_{n-1} T^{n-1} (\vec{v}) \right)$. This matrix
+            is exactly the companion matrix of the polynomial $\chi_T (x) = x^n + \sum_{i=0}^{n-1} a_i x^i$. With this
+            observation, $\chi_T (T) (\vec{v})$ (which means the transformation $\chi_T (T)$ applied to the vector $v$)
+            is $T^n (\vec{v}) + \left( a_{n-1} T^{n-1} (\vec{v}) + \dots + a_0 \vec{v} \right)$, which is zero because
+            of how we wrote out $T^n$. 
+
+            But $\vec{v}$ was arbitrary, and $\chi_T (T) (\vec{v}) = \vec{0}_V$ for any $\vec{v} \in V$ implies that
+            $\chi_T (T)$ is the zero linear map.
+        \end{proof}
+\end{document}
