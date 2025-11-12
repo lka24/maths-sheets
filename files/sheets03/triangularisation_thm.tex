@@ -202,4 +202,22 @@
             Because both the matrices on the diagonal are upper triangular, $[T]_B$ is upper triangular. This completes the proof.
             
         \end{proof} 
+        \begin{tcolorbox}[colback=yellow!5, colframe=orange!80!black]
+            The above proof also gives us a way to find the basis $B$ that reveals the triangularised matrix. 
+            The steps are:
+
+            \begin{enumerate}
+                \item Find an eigenvector $\vec{w}_1$, and define $W := \Span{\vec{w}_1}$.
+                \item Form $[\bar{T}]_{\bar{B}}$ and find an eigenvector $W + \vec{w}_2$ of that, then 
+                let $W^\prime = \Span{\vec{w}_1, \vec{w}_2}$.
+                \item Do the same thing for $\bar{\bar{T}} : \sfrac{V}{W^\prime} \rightarrow \sfrac{V}{W^\prime}$ and
+                form $W^{\prime\prime}$.
+                \item Repeat the above step until $W=V$. The resulting basis $\vec{w}_1, \dots, \vec{w}_n$ triangularises
+                the matrix.
+            \end{enumerate}
+        \end{tcolorbox}
+
+        \begin{warning}
+            Remember that the theorem only works when the matrix's characteristic polynomial can be factorised into linear factors!
+        \end{warning}
 \end{document}
